@@ -8,7 +8,7 @@ from PIL import Image
 API_TOKEN = st.secrets["API_TOKEN"]
 
 # Hugging Face model endpoint for image generation (use the correct model ID)
-endpoint = "https://api-inference.huggingface.co/models/runwayml/stable-diffusion-v1-5"  # Replace with your model ID
+endpoint = "https://api-inference.huggingface.co/models/CompVis/stable-diffusion-v-1-4-original"
 
 # Function to generate image from text input
 def generate_image(prompt):
