@@ -1,37 +1,45 @@
 import streamlit as st
 import requests
 
-# Replace this with your real Hugging Face token
-API_TOKEN = "hf_YOUR_REAL_TOKEN_HERE"
+# Access Hugging Face API Token from Streamlit Secrets
+API_TOKEN = st.secrets["API_TOKEN"]
 
-# Use Stable Diffusion v1.5 for clean educational diagrams
-API_URL = "https://api-inference.huggingface.co/models/runwayml/stable-diffusion-v1-5"
-HEADERS = {"Authorization": f"Bearer {API_TOKEN}"}
+# Hugging Face model endpoint for image generation (use the correct model ID)
+endpoint = "https://api-inference.huggingface.co/models/your-model-id"  # Replace with your model ID
 
+# Function to generate image from text input
 def generate_image(prompt):
-    payload = {"inputs": prompt}
-    response = requests.post(API_URL, headers=HEADERS, json=payload)
-
+    headers = {"Authorization": f"Bearer {API_TOKEN}"}
+    payload = {
+        "inputs": prompt,
+    }
+    
+    # Request to Hugging Face API
+    response = requests.post(endpoint, headers=headers, json=payload)
+    
     if response.status_code == 200:
-        return response.content  # Returns the raw image bytes
+        return response.json()
     else:
-        st.error(f"❌ Failed to generate image (Status {response.status_code})")
-        try:
-            st.json(response.json())
-        except:
-            pass
+        st.error(f"Error: {response.status_code} - {response.text}")
         return None
 
-st.set_page_config(page_title="📚 Student AI Image Generator", layout="centered")
-st.title("📘 Study Image Generator")
-st.write("Enter your study topic or description:")
+# Streamlit App UI
+st.set_page_config(page_title="Text to Image Generator", layout="centered")
+st.title("🎨 Text to Image Generator")
+st.write("Enter a description to generate an image based on it!")
 
-user_input = st.text_input("✏️ Example: 'Labelled diagram of a plant cell'")
+# Input area for prompt
+prompt = st.text_area("Enter your text prompt:")
 
-if st.button("Generate Image") and user_input:
-    with st.spinner("🔄 Generating..."):
-        image = generate_image(user_input)
-
-    if image:
-        st.image(image, caption=f"Prompt: {user_input}")
-        st.success("✅ Image generated successfully!")
+# Button to trigger image generation
+if st.button("Generate Image"):
+    if prompt:
+        with st.spinner("Generating image..."):
+            result = generate_image(prompt)
+            if result:
+                # Assuming result contains the image URL or base64-encoded image
+                st.image(result[0]['image'], caption="Generated Image", use_column_width=True)
+            else:
+                st.error("Failed to generate image. Please try again.")
+    else:
+        st.warning("Please enter a text prompt.")
