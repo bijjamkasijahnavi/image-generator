@@ -5,7 +5,7 @@ import requests
 API_TOKEN = st.secrets["API_TOKEN"]
 
 # Hugging Face model endpoint for image generation (use the correct model ID)
-endpoint = "https://api-inference.huggingface.co/models/your-model-id"  # Replace with your model ID
+endpoint = "https://api-inference.huggingface.co/models/runwayml/stable-diffusion-v1-5"  # Replace with your model ID
 
 # Function to generate image from text input
 def generate_image(prompt):
