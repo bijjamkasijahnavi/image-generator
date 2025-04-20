@@ -7,8 +7,8 @@ from PIL import Image
 # Access Hugging Face API Token from Streamlit Secrets
 API_TOKEN = st.secrets["API_TOKEN"]
 
-# Hugging Face model endpoint for image generation (use the correct model ID)
-endpoint = "https://api-inference.huggingface.co/models/CompVis/stable-diffusion-v-1-4-original"
+# Hugging Face model endpoint for image generation (use a supported model ID)
+endpoint = "https://api-inference.huggingface.co/models/CompVis/stable-diffusion-v-1-4-original"  # Correct model ID
 
 # Function to generate image from text input
 def generate_image(prompt):
